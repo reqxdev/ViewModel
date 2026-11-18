@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "viewmodel",
+	"version": "1",
+	"name": "ViewModel",
+	"description": "Customize your first-person view model",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["ViewModel.ViewModel"]
+	},
+	"mixins": ["viewmodel.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"fabric-api": "*",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-language-kotlin": ">=1.14.2+kotlin.2.4.21"
+	}
+}
