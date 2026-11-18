@@ -4,11 +4,15 @@ Customize your first-person view model. Client-side Fabric mod for **Minecraft 2
 
 ## Download
 
-**[viewmodel-26.2.jar](https://github.com/reqxdev/ViewModel/releases/download/latest-26.2/viewmodel-26.2.jar)**: latest build for Minecraft 26.2
+**ViewModel 26.3**: [viewmodel-26.3.jar](https://github.com/reqxdev/ViewModel/releases/download/latest-26.3/viewmodel-26.3.jar)
 
-Requires [Fabric Loader](https://fabricmc.net/use/), [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin).
+**ViewModel 26.2**: [viewmodel-26.2.jar](https://github.com/reqxdev/ViewModel/releases/download/latest-26.2/viewmodel-26.2.jar)
 
-Other Minecraft versions: switch branch, or see [all releases](https://github.com/reqxdev/ViewModel/releases).
+### Requirements
+
+- [Fabric Loader](https://fabricmc.net/use/) 0.19.5
+- [Fabric API](https://modrinth.com/mod/fabric-api) 0.161.0+26.2
+- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) 1.14.2+kotlin.2.4.21
 
 ## Usage
 
