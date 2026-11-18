@@ -5,9 +5,10 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+# One group for all branches: runs edit the shared "latest" release one at a time.
 concurrency:
-  group: release-${{ github.ref_name }}
-  cancel-in-progress: true
+  group: release
+  cancel-in-progress: false
 jobs:
   release:
     runs-on: ubuntu-24.04
@@ -22,15 +23,14 @@ jobs:
           distribution: microsoft
       - uses: gradle/actions/setup-gradle@v6
       - run: ./gradlew build
-      - name: Publish release for this branch
+      - name: Upload jar to the shared Latest release
         run: |
-          TAG="latest-$MC"
-          JAR="viewmodel-$MC.jar"
-          cp build/libs/viewmodel.jar "$JAR"
-          # Only the newest MC branch gets GitHub's "Latest" badge.
-          NEWEST=$(git ls-remote --heads origin '26.*' | sed 's|.*refs/heads/||' | sort -V | tail -1)
-          [ "$MC" = "$NEWEST" ] && LATEST=true || LATEST=false
-          gh release delete "$TAG" --yes || true
-          git push -f origin "$GITHUB_SHA:refs/tags/$TAG"
-          gh release create "$TAG" "$JAR" --title "ViewModel for MC $MC" \
-            --notes "Built from \`$MC\` @ ${GITHUB_SHA::7}" --target "$GITHUB_SHA" --latest=$LATEST
+          JAR="build/libs/viewmodel+$MC.jar"
+          test -f "$JAR"
+          # Remove the old per-version release from the previous setup (no-op once gone).
+          gh release delete "latest-$MC" --cleanup-tag --yes || true
+          git push -f origin "$GITHUB_SHA:refs/tags/latest"
+          gh release view latest >/dev/null 2>&1 || \
+            gh release create latest --title Latest --notes "Download the jar for your Minecraft version." --latest
+          # Replaces only this version's jar; the other versions' jars are left alone.
+          gh release upload latest "$JAR" --clobber

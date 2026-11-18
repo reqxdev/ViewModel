@@ -12,6 +12,10 @@ kotlin {
     jvmToolchain(25)
 }
 
+base {
+    archivesName = "viewmodel+$minecraft_version"
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft_version")
     implementation("net.fabricmc:fabric-loader:$loader_version")
