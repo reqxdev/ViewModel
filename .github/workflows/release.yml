@@ -20,6 +20,7 @@ jobs:
         with:
           java-version: '25'
           distribution: microsoft
+      - uses: gradle/actions/setup-gradle@v6
       - run: ./gradlew build
       - name: Publish release for this branch
         run: |
@@ -32,4 +33,4 @@ jobs:
           gh release delete "$TAG" --yes || true
           git push -f origin "$GITHUB_SHA:refs/tags/$TAG"
           gh release create "$TAG" "$JAR" --title "ViewModel for MC $MC" \
-            --notes "Built from \`$MC\` @ ${GITHUB_SHA::7}" --latest=$LATEST
+            --notes "Built from \`$MC\` @ ${GITHUB_SHA::7}" --target "$GITHUB_SHA" --latest=$LATEST
