@@ -4,9 +4,9 @@ Customize your first-person view model. Client-side Fabric mod for **Minecraft 2
 
 ## Download
 
-**ViewModel 26.3**: [viewmodel-26.3.jar](https://github.com/reqxdev/ViewModel/releases/download/latest-26.3/viewmodel-26.3.jar)
+**ViewModel 26.3**: [viewmodel+26.3.jar](https://github.com/reqxdev/ViewModel/releases/download/latest/viewmodel%2B26.3.jar)
 
-**ViewModel 26.2**: [viewmodel-26.2.jar](https://github.com/reqxdev/ViewModel/releases/download/latest-26.2/viewmodel-26.2.jar)
+**ViewModel 26.2**: [viewmodel+26.2.jar](https://github.com/reqxdev/ViewModel/releases/download/latest/viewmodel%2B26.2.jar)
 
 ### Requirements
 
