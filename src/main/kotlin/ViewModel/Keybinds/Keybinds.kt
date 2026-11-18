@@ -13,7 +13,7 @@ object Keybinds {
     @JvmField var openMenuNextTick = false
     @JvmField val CATEGORY = KeyMapping.Category(Identifier.fromNamespaceAndPath(ViewModel.MOD_ID, ViewModel.MOD_ID))
     @JvmField val OPEN_MENU = KeyMapping(
-        "key.${ViewModel.MOD_ID}.open_menu", InputConstants.Type.KEYBOARD, InputConstants.KEY_V, CATEGORY
+        "key.${ViewModel.MOD_ID}.open_menu", InputConstants.Type.KEYSYM, InputConstants.KEY_V, CATEGORY
     )
 
     @JvmStatic fun register() {

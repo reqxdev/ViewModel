@@ -2,7 +2,7 @@ package ViewModel.Mixins
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.math.Axis
-import net.minecraft.client.renderer.FirstPersonHandsAndItemsRenderer
+import net.minecraft.client.renderer.ItemInHandRenderer
 import net.minecraft.util.Mth
 import net.minecraft.world.entity.HumanoidArm
 import org.spongepowered.asm.mixin.Mixin
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import ViewModel.Config.Profiles
 
-@Mixin(FirstPersonHandsAndItemsRenderer::class)
+@Mixin(ItemInHandRenderer::class)
 abstract class HandSwingMixin {
     @Shadow protected abstract fun applyItemArmAttackTransform(poseStack: PoseStack, arm: HumanoidArm, attackValue: Float)
 
@@ -40,10 +40,10 @@ abstract class HandSwingMixin {
         val scale = settings.size
         val squared = Mth.sin(attackValue * attackValue * Math.PI)
         val rooted = Mth.sin(Mth.sqrt(attackValue) * Math.PI)
-        poseStack.rotateDegrees(Axis.YP, invert * (45f - squared * 20f * scale))
-        poseStack.rotateDegrees(Axis.ZP, invert * rooted * -20f * scale)
-        poseStack.rotateDegrees(Axis.XP, rooted * -80f * scale)
-        poseStack.rotateDegrees(Axis.YP, invert * -45f)
+        poseStack.mulPose(Axis.YP.rotationDegrees(invert * (45f - squared * 20f * scale)))
+        poseStack.mulPose(Axis.ZP.rotationDegrees(invert * rooted * -20f * scale))
+        poseStack.mulPose(Axis.XP.rotationDegrees(rooted * -80f * scale))
+        poseStack.mulPose(Axis.YP.rotationDegrees(invert * -45f))
         ci.cancel()
     }
 }

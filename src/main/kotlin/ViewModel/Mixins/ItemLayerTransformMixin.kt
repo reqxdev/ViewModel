@@ -15,8 +15,8 @@ abstract class ItemLayerTransformMixin {
     private fun `viewmodel$rotateAroundItem`(pose: PoseStack.Pose, ci: CallbackInfo) {
         if (!ItemRenderScope.active) return
         val settings = Profiles.current
-        pose.rotateDegrees(Axis.XP, settings.rotationPitch)
-        pose.rotateDegrees(Axis.YP, settings.rotationYaw)
-        pose.rotateDegrees(Axis.ZP, settings.rotationRoll)
+        pose.rotate(Axis.XP.rotationDegrees(settings.rotationPitch))
+        pose.rotate(Axis.YP.rotationDegrees(settings.rotationYaw))
+        pose.rotate(Axis.ZP.rotationDegrees(settings.rotationRoll))
     }
 }
