@@ -13,13 +13,6 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-/**
- * Shape drawing on top of vanilla's [GuiGraphicsExtractor].
- *
- * Inputs are GUI-scaled coordinates (floats allowed). Internally everything is rasterised in physical
- * pixels by un-applying the GUI scale, so rounded corners and strokes stay crisp at any scale.
- * Rounded edges get one partially transparent pixel per row for horizontal anti-aliasing.
- */
 object Draw {
     enum class Align { LEFT, CENTER, RIGHT }
 
@@ -40,7 +33,6 @@ object Draw {
     fun rect(g: GuiGraphicsExtractor, x: Float, y: Float, width: Float, height: Float, color: Int) =
         roundedRect(g, x, y, width, height, 0f, color)
 
-    /** Rounded rectangle with an optional vertical gradient (`top` to `bottom`). */
     fun roundedRect(
         g: GuiGraphicsExtractor, x: Float, y: Float, width: Float, height: Float,
         radius: Float, top: Int, bottom: Int = top,
@@ -85,7 +77,6 @@ object Draw {
     fun circle(g: GuiGraphicsExtractor, centerX: Float, centerY: Float, radius: Float, color: Int) =
         roundedRect(g, centerX - radius, centerY - radius, radius * 2, radius * 2, radius, color)
 
-    /** A 1px border with a filled body, as used by every control. */
     fun bordered(g: GuiGraphicsExtractor, x: Float, y: Float, width: Float, height: Float, radius: Float, border: Int, fill: Int) {
         roundedRect(g, x, y, width, height, radius, border)
         roundedRect(g, x + 1, y + 1, width - 2, height - 2, max(0f, radius - 1), fill)
@@ -96,7 +87,6 @@ object Draw {
         bordered(g, x, y, width, height, Theme.PANEL_RADIUS, Theme.PANEL_BORDER, Theme.PANEL)
     }
 
-    /** Stroked polyline made of square dabs; points are GUI coordinates. */
     fun polyline(g: GuiGraphicsExtractor, points: List<Pair<Float, Float>>, thickness: Float, color: Int) = physical(g) { s ->
         val t = max(1, (thickness * s).roundToInt())
         fun dab(px: Float, py: Float) {
@@ -118,13 +108,11 @@ object Draw {
     fun line(g: GuiGraphicsExtractor, x1: Float, y1: Float, x2: Float, y2: Float, thickness: Float, color: Int) =
         polyline(g, listOf(x1 to y1, x2 to y2), thickness, color)
 
-    /** Chevron centred vertically on [y], spanning [size] horizontally from [x]. */
     fun chevron(g: GuiGraphicsExtractor, x: Float, y: Float, size: Float, up: Boolean, color: Int) {
         val d = if (up) -1f else 1f
         polyline(g, listOf(x to y - d * size * .25f, x + size / 2 to y + d * size * .25f, x + size to y - d * size * .25f), 1.2f, color)
     }
 
-    /** Counter-clockwise "reset" arrow inside a [size] x [size] box (24-unit icon grid). */
     fun resetIcon(g: GuiGraphicsExtractor, x: Float, y: Float, size: Float, color: Int) {
         val u = size / 24f
         val cx = x + 12 * u
@@ -144,10 +132,6 @@ object Draw {
         line(g, x + 2 * u, y + 10 * u, x + 8 * u, y + 10 * u, stroke, color)
     }
 
-    /**
-     * Vanilla-font text, vertically centred on [centerY]. [size] is a nominal pixel height (9 = vanilla);
-     * text wider than [maxWidth] is shrunk to fit.
-     */
     fun text(
         g: GuiGraphicsExtractor, text: String, x: Float, centerY: Float, color: Int,
         align: Align = Align.LEFT, size: Float = 9f, maxWidth: Float = Float.MAX_VALUE,

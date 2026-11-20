@@ -9,7 +9,6 @@ object Commands {
     @JvmStatic fun register() {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
             dispatcher.register(ClientCommands.literal(ViewModel.MOD_ID).executes {
-                // The chat screen closes after the command runs, so open on the next tick.
                 Keybinds.openMenuNextTick = true
                 1
             })

@@ -11,10 +11,6 @@ import java.nio.file.Files
 
 class Profile(var name: String, val settings: Settings = Settings())
 
-/**
- * Named view model profiles, persisted to `config/viewmodel.json`.
- * The active profile's [Settings] are edited in place, so changes apply live.
- */
 object Profiles {
     const val MAX_NAME_LENGTH = 32
     private val LOGGER = LoggerFactory.getLogger(ViewModel.MOD_ID)
@@ -27,7 +23,6 @@ object Profiles {
 
     val active: Profile get() = profiles[activeIndex]
 
-    /** Read by the hand-rendering mixins every frame. */
     @JvmStatic val current: Settings get() = profiles[activeIndex].settings
 
     val names: List<String> get() = profiles.map { it.name }
@@ -71,7 +66,6 @@ object Profiles {
     private fun exists(name: String, except: Profile? = null) =
         profiles.any { it !== except && it.name.equals(name, ignoreCase = true) }
 
-    /** Creates a baseline profile (de-duplicating the name) and makes it active. */
     fun create(name: String): Profile {
         val base = name.trim().take(MAX_NAME_LENGTH)
         var unique = base

@@ -13,7 +13,6 @@ import ViewModel.Config.Profiles
 
 @Mixin(FirstPersonHandsAndItems::class)
 abstract class HandEquipMixin {
-    /** Keeps both hands fully raised: no equip dip, no attack-cooldown lowering. */
     @Inject(method = ["extractRenderState"], at = [At("TAIL")])
     private fun `viewmodel$lockEquipProgress`(
         player: LocalPlayer, partialTicks: Float, state: FirstPersonHandsAndItemsRenderState, ci: CallbackInfo

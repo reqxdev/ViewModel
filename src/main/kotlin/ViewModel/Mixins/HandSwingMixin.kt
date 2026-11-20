@@ -17,7 +17,6 @@ import ViewModel.Config.Profiles
 abstract class HandSwingMixin {
     @Shadow protected abstract fun applyItemArmAttackTransform(poseStack: PoseStack, arm: HumanoidArm, attackValue: Float)
 
-    /** No Swing: drop the swing translation, keep only the attack rotation. */
     @Inject(method = ["swingArm"], at = [At("HEAD")], cancellable = true)
     private fun `viewmodel$disableSwing`(animation: Float, poseStack: PoseStack, invert: Int, arm: HumanoidArm, ci: CallbackInfo) {
         if (!Profiles.current.noSwing) return
