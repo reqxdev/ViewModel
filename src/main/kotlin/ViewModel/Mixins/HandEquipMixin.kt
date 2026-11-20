@@ -11,10 +11,6 @@ import ViewModel.Config.Profiles
 
 @Mixin(ItemInHandRenderer::class)
 abstract class HandEquipMixin {
-    /**
-     * Keeps both hands fully raised: no equip dip, no attack-cooldown lowering.
-     * Only the values read for rendering are overridden; the ticked height state is left alone.
-     */
     @ModifyExpressionValue(
         method = ["submitHandsWithItems"],
         at = [

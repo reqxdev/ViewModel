@@ -6,7 +6,6 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import ViewModel.Config.Profiles
 
-/** The ViewModel editor: profile management on the left, live sliders and toggles in the centre. */
 class ViewModelScreen(private val parent: Screen?) : Screen(Component.translatable("viewmodel.gui.title")) {
     private class SliderRow(val option: Option, val slider: UiSlider, val labelX: Int, val labelY: Int, val valueRight: Int)
 
@@ -53,14 +52,16 @@ class ViewModelScreen(private val parent: Screen?) : Screen(Component.translatab
         addRenderableWidget(UiButton(card.x, resetY, card.width, 16, Component.translatable("viewmodel.gui.reset"), UiButton.Style.WIDE, ::resetProfile))
 
         val toggleGap = 8
-        val toggleWidth = (card.width - toggleGap * 2) / 3
+        val toggleWidth = (card.width - toggleGap) / 2
         val toggleY = resetY + 28
-        fun toggle(column: Int, key: String, get: () -> Boolean, set: (Boolean) -> Unit) {
-            toggles += addRenderableWidget(UiToggle(card.x + (toggleWidth + toggleGap) * column, toggleY, toggleWidth, Component.translatable(key), get, set))
+        fun toggle(column: Int, row: Int, key: String, get: () -> Boolean, set: (Boolean) -> Unit) {
+            val x = card.x + (toggleWidth + toggleGap) * column
+            toggles += addRenderableWidget(UiToggle(x, toggleY + row * TOGGLE_ROW, toggleWidth, Component.translatable(key), get, set))
         }
-        toggle(0, "viewmodel.gui.no_swing", { Profiles.current.noSwing }) { Profiles.current.noSwing = it }
-        toggle(1, "viewmodel.gui.scale_swing", { Profiles.current.scaleSwing }) { Profiles.current.scaleSwing = it }
-        toggle(2, "viewmodel.gui.no_equip", { Profiles.current.skipEquipAnimation }) { Profiles.current.skipEquipAnimation = it }
+        toggle(0, 0, "viewmodel.gui.no_swing", { Profiles.current.noSwing }) { Profiles.current.noSwing = it }
+        toggle(1, 0, "viewmodel.gui.scale_swing", { Profiles.current.scaleSwing }) { Profiles.current.scaleSwing = it }
+        toggle(0, 1, "viewmodel.gui.no_haste", { Profiles.current.noHaste }) { Profiles.current.noHaste = it }
+        toggle(1, 1, "viewmodel.gui.no_equip", { Profiles.current.skipEquipAnimation }) { Profiles.current.skipEquipAnimation = it }
     }
 
     private fun createProfile() {
@@ -109,7 +110,6 @@ class ViewModelScreen(private val parent: Screen?) : Screen(Component.translatab
         statusTicks = 80
     }
 
-    /** A light tint only: no blur, so the held item stays visible as a live preview. */
     override fun extractBackground(g: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
         g.fill(0, 0, width, height, Theme.BACKDROP)
     }
@@ -119,7 +119,6 @@ class ViewModelScreen(private val parent: Screen?) : Screen(Component.translatab
         Draw.panel(g, layout.editor.x.toFloat(), layout.editor.y.toFloat(), layout.editor.width.toFloat(), layout.editor.height.toFloat())
         drawLabels(g)
 
-        // While the list is open, nothing underneath it should react to hover.
         val blocked = dropdown.isOpen && dropdown.isMouseOver(mouseX.toDouble(), mouseY.toDouble())
         super.extractRenderState(g, if (blocked) -1 else mouseX, if (blocked) -1 else mouseY, delta)
 
@@ -163,5 +162,6 @@ class ViewModelScreen(private val parent: Screen?) : Screen(Component.translatab
     private companion object {
         const val PROFILE_PADDING = 6
         const val EDITOR_PADDING = 12
+        const val TOGGLE_ROW = 18
     }
 }

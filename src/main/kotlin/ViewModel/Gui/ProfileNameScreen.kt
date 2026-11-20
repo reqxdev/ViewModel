@@ -8,7 +8,6 @@ import net.minecraft.client.input.KeyEvent
 import net.minecraft.network.chat.Component
 import ViewModel.Config.Profiles
 
-/** Text prompt for creating/renaming a profile. [submit] returns an error message, or null on success. */
 class ProfileNameScreen(
     private val parent: Screen, title: Component, private val initialValue: String,
     private val submit: (String) -> Component?,

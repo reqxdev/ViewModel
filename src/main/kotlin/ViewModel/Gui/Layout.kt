@@ -6,15 +6,13 @@ data class Rect(val x: Int, val y: Int, val width: Int, val height: Int) {
     fun inset(amount: Int) = Rect(x + amount, y + amount, width - amount * 2, height - amount * 2)
 }
 
-/** Profiles card on the left, editor card centred; compact enough for Minecraft's scaled UI. */
 data class Layout(val profiles: Rect, val editor: Rect) {
     companion object {
         private const val GAP = 10
         private const val PROFILE_WIDTH = 123
         private const val PROFILE_HEIGHT = 77
         private const val EDITOR_WIDTH = 305
-        /** Header + one 20px row per slider + reset button + toggles. */
-        val HEIGHT = 94 + Option.entries.size * 20
+        val HEIGHT = 112 + Option.entries.size * 20
 
         fun centered(screenWidth: Int, screenHeight: Int): Layout {
             val available = maxOf(340, screenWidth - 16)

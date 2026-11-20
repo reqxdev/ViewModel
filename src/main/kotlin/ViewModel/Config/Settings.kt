@@ -1,8 +1,9 @@
 package ViewModel.Config
 
 import com.google.gson.JsonObject
+import kotlin.math.log2
+import kotlin.math.pow
 
-/** One profile's view model values. Positions are in hundredths of a block, rotations in degrees. */
 class Settings(
     @JvmField var size: Float = 1f,
     @JvmField var positionX: Float = 0f,
@@ -11,12 +12,14 @@ class Settings(
     @JvmField var rotationYaw: Float = 0f,
     @JvmField var rotationPitch: Float = 0f,
     @JvmField var rotationRoll: Float = 0f,
-    /** Swing animation speed multiplier; 2 = twice as fast. */
-    @JvmField var swingSpeed: Float = 1f,
+    @JvmField var swingSpeed: Float = 0f,
     @JvmField var noSwing: Boolean = false,
     @JvmField var scaleSwing: Boolean = false,
+    @JvmField var noHaste: Boolean = false,
     @JvmField var skipEquipAnimation: Boolean = false,
 ) {
+    val swingMultiplier: Float get() = 2f.pow(swingSpeed.coerceIn(-3f, 3f) / 2f)
+
     fun resetToBaseline() = copyFrom(Settings())
 
     fun copyFrom(other: Settings) {
@@ -30,6 +33,7 @@ class Settings(
         swingSpeed = other.swingSpeed
         noSwing = other.noSwing
         scaleSwing = other.scaleSwing
+        noHaste = other.noHaste
         skipEquipAnimation = other.skipEquipAnimation
     }
 
@@ -41,13 +45,21 @@ class Settings(
         addProperty("rotationYaw", rotationYaw)
         addProperty("rotationPitch", rotationPitch)
         addProperty("rotationRoll", rotationRoll)
-        addProperty("swingSpeed", swingSpeed)
+        addProperty("swingSpeedLevel", swingSpeed)
         addProperty("noSwing", noSwing)
         addProperty("scaleSwing", scaleSwing)
+        addProperty("noHaste", noHaste)
         addProperty("skipEquipAnimation", skipEquipAnimation)
     }
 
     companion object {
+        private fun swingLevel(json: JsonObject, default: Float): Float {
+            json.get("swingSpeedLevel")?.takeIf { it.isJsonPrimitive }?.let { return it.asFloat.coerceIn(-3f, 3f) }
+            val old = json.get("swingSpeed")?.takeIf { it.isJsonPrimitive }?.asFloat ?: return default
+            if (old <= 0f) return default
+            return (2f * log2(old)).coerceIn(-3f, 3f)
+        }
+
         fun fromJson(json: JsonObject): Settings {
             val base = Settings()
             fun float(key: String, default: Float) = json.get(key)?.takeIf { it.isJsonPrimitive }?.asFloat ?: default
@@ -60,9 +72,10 @@ class Settings(
                 float("rotationYaw", base.rotationYaw),
                 float("rotationPitch", base.rotationPitch),
                 float("rotationRoll", base.rotationRoll),
-                float("swingSpeed", base.swingSpeed),
+                swingLevel(json, base.swingSpeed),
                 bool("noSwing", base.noSwing),
                 bool("scaleSwing", base.scaleSwing),
+                bool("noHaste", base.noHaste),
                 bool("skipEquipAnimation", base.skipEquipAnimation),
             )
         }

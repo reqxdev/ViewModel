@@ -5,7 +5,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-# One group for all branches: runs edit the shared "latest" release one at a time.
 concurrency:
   group: release
   cancel-in-progress: false
@@ -27,10 +26,8 @@ jobs:
         run: |
           JAR="build/libs/viewmodel+$MC.jar"
           test -f "$JAR"
-          # Remove the old per-version release from the previous setup (no-op once gone).
           gh release delete "latest-$MC" --cleanup-tag --yes || true
           git push -f origin "$GITHUB_SHA:refs/tags/latest"
           gh release view latest >/dev/null 2>&1 || \
             gh release create latest --title Latest --notes "Download the jar for your Minecraft version." --latest
-          # Replaces only this version's jar; the other versions' jars are left alone.
           gh release upload latest "$JAR" --clobber

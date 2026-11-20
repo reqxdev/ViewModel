@@ -28,14 +28,12 @@ abstract class HandTransformMixin {
         hand: InteractionHand, attack: Float, itemStack: ItemStack, inverseArmHeight: Float,
         poseStack: PoseStack, collector: SubmitNodeCollector, lightCoords: Int, ci: CallbackInfo
     ) {
-        // Empty hands go through the same scope; offsetting them would make the bare arm jump.
         if (itemStack.isEmpty) return
         val settings = Profiles.current
         val handSign = if (hand == InteractionHand.MAIN_HAND) 1f else -1f
         poseStack.translate(settings.positionX / 100f * handSign, settings.positionY / 100f, settings.positionZ / 100f)
     }
 
-    /** Scales the held item and marks the submit so [ItemLayerTransformMixin] rotates it around its own centre. */
     @WrapOperation(
         method = ["submitArmWithItem"],
         at = [At(

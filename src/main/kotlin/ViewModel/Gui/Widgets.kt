@@ -11,7 +11,6 @@ import java.text.DecimalFormat
 import kotlin.math.roundToLong
 import kotlin.math.sign
 
-/** Base for the editor's natively drawn controls; subclasses only paint and react to clicks. */
 abstract class UiWidget(x: Int, y: Int, width: Int, height: Int, label: Component) :
     AbstractWidget(x, y, width, height, label) {
     protected val fx get() = x.toFloat()
@@ -60,7 +59,6 @@ class ResetIconButton(x: Int, y: Int, private val action: () -> Unit) :
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean) = action()
 }
 
-/** Label on the left, pill switch on the right. */
 class UiToggle(
     x: Int, y: Int, width: Int, label: Component,
     private val source: () -> Boolean, private val changed: (Boolean) -> Unit,
@@ -89,7 +87,6 @@ class UiToggle(
     }
 }
 
-/** Thin track + knob slider that snaps to [step] and reports actual (not normalised) values. */
 class UiSlider(
     x: Int, y: Int, width: Int,
     private val min: Double, private val max: Double, private val step: Double,
@@ -128,7 +125,6 @@ class UiSlider(
     }
 }
 
-/** Collapsed: shows the active profile. Open: a scrollable list drawn on a higher stratum. */
 class ProfileDropdown(
     x: Int, y: Int, width: Int, entries: List<String>, selectedIndex: Int,
     private val selected: (Int) -> Unit,
@@ -150,7 +146,6 @@ class ProfileDropdown(
         Draw.text(g, label(selectedIndex), fx + 7, fy + fh / 2, Theme.TEXT, size = 8.5f, maxWidth = fw - 26)
     }
 
-    /** Called by the screen after everything else, on a fresh stratum so it covers the buttons below. */
     fun extractOverlay(g: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         if (!isOpen) return
         val top = overlayY.toFloat()
