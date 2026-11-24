@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "ViewModel.Mixins",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"ChatRenderingMixin",
+		"HandEquipMixin",
+		"HandSwingMixin",
+		"HandTransformMixin",
+		"ItemLayerTransformMixin",
+		"SwingSpeedMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
